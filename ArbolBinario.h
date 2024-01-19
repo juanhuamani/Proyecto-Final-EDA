@@ -87,7 +87,7 @@ void verArbol(ABB arbol, int n)
 		cout << "   ";
 
 	numNodosABB++;
-	cout << arbol->nro << endl;
+	cout << "("<< arbol->nro<<")" << endl;
 
 	verArbol(arbol->izq, n + 1);
 }
@@ -137,77 +137,76 @@ void insertarNumerosRandom(ABB &arbol, int n)
         insertar(arbol, num);
     }
     cout << "\n\t  Números aleatorios insertados..!" << endl << endl;
-    system("cls");
 }
 
 
-void menu()
-{
-	//system("cls");
-	cout<<"\n"<<"==============================================================================="<<"\n";
-	cout << "\n\t\t           ..[ ARBOL BINARIO DE BUSQUEDA ]..  \n";
-	cout<<"\n"<<"==============================================================================="<<"\n";
-	cout << "\t [1]  Insertar elemento      arbol ABB   \n";
-	cout << "\t [2]  Mostrar arbol          arbol ABB   \n";
-	cout << "\t [3]  Limpiar arbol          arbol ABB   \n";
-	cout << "\t [4]  Insertar random        arbol ABB   \n";
+void menuABB(ABB& arbol){
+	int op , x;
+	do{
+		system("color 0a"); 
+		system("cls");
+		cout<<"\n"<<"==============================================================================="<<"\n";
+		cout << "\n\t\t           ..[ ARBOL BINARIO DE BUSQUEDA ]..  \n";
+		cout<<"\n"<<"==============================================================================="<<"\n";
+		cout << "\t [1]  Insertar elemento      arbol ABB   \n";
+		cout << "\t [2]  Mostrar arbol          arbol ABB   \n";
+		cout << "\t [3]  Limpiar arbol          arbol ABB   \n";
+		cout << "\t [4]  Insertar random        arbol ABB   \n";
+		cout << "\t [5]  Salir                  arbol ABB   \n";
 
-	cout << "\n\t Ingrese opcion : ";
-}
+		cout << "\n\t Ingrese opcion : ";
 
-
-
-int main()
-{
-	ABB arbol = NULL;
-	int x;
-	int op;
-
-
-	system("color f9");  
-	do
-	{
-		menu();  cin >> op;
+		cin >> op;
 		cout << endl;
+		system("cls"); 
 
 		switch (op)
 		{
-	    case 0:
-		    exit(0);
-		    break;
-		    
-		case 1:
-			system("cls");
+			case 1:
+				cout << " Ingrese valor : ";  cin >> x;
+				insertar(arbol, x);
+				break;
 
-			cout << " Ingrese valor : ";  cin >> x;
-			insertar(arbol, x);
-			break;
+			case 2: 
+				std::cout<<"\n"<<"==============================================================================="<<"\n";
+				std::cout<<"\n"<<"                                   ARBOL ABB                                   "<<"\n";
+				std::cout<<"\n"<<"==============================================================================="<<"\n\n\n";
+				verArbol(arbol, 0);
+				system("pause");
+				break;
 
-		case 2:
-			system("cls");
-			verArbol(arbol, 0);
-			system("pause");
-			break;
+			case 3:
+				limpiarArbol(arbol);
+				cout<<"\n"<<"==============================================================================="<<"\n";
+				cout<<"\n"<<"                                   ARBOL LIMPIO                                "<<"\n";
+				cout<<"\n"<<"==============================================================================="<<"\n";
+				system("pause");
+				break;
 
-		case 3:
-			limpiarArbol(arbol);
-			cout<<"\n"<<"==============================================================================="<<"\n";
-            cout<<"\n"<<"                                   ARBOL LIMPIO                                "<<"\n";
-            cout<<"\n"<<"==============================================================================="<<"\n";
-            break;
-        case 4:
-            system("cls");
-            int cantidadNumeros;
-            cout << " Ingrese la cantidad de números aleatorios a insertar: ";
-            cin >> cantidadNumeros;
-            insertarNumerosRandom(arbol, cantidadNumeros);
-            break;
-            
-		cout <<endl<<endl<<endl;
-		system("pause"); 
-		system("cls");
+			case 4:
+				int cantidadNumeros;
+				cout << " Ingrese la cantidad de números aleatorios a insertar: ";
+				cin >> cantidadNumeros;
+				insertarNumerosRandom(arbol, cantidadNumeros);
+				system("pause");
+				break;
+				
+			default:
+				cout << " Opcion incorrecta..!" << endl;
+				break;
+
 		} 
 
-	} while (op != 0);
+	} while (op != 5);
+}
+
+
+/*	
+int main()
+{
+	ABB arbol = NULL;
+	menuABB(arbol); 
+	
 
 }
+*/

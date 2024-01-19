@@ -195,6 +195,15 @@ public:
         }
     }
 
+    void limpiarArbol(NodoAVL* nodoActual) {
+        if (nodoActual != nullptr) {
+            limpiarArbol(nodoActual->left);
+            limpiarArbol(nodoActual->right);
+            delete nodoActual;
+            nodoActual = nullptr;
+        }
+    }
+
 private:
     int getAltura(NodoAVL* nodoActual) {
         if (nodoActual == nullptr) {
@@ -227,19 +236,80 @@ private:
     }
 };
 
+void insertarNumerosRandom(ArbolAVL &arbol, int n) {
+    for (int i = 0; i < n; i++) {
+        arbol.insertar(rand() % 100);
+    }
+
+    std::cout << "\n\t  Números aleatorios insertados..!" << std::endl << std::endl;
+
+}
+
+void menuAVL(ArbolAVL &arbol) {
+    int opcion = 0;
+    int elemento = 0;
+
+    do {
+        system("color 0a"); 
+		system("cls");
+		std::cout<<"\n"<<"==============================================================================="<<"\n";
+		std::cout << "\n\t\t           ..[ ARBOL ADELSON VELSKII Y LANDIS ]..  \n";
+		std::cout<<"\n"<<"==============================================================================="<<"\n";
+        std::cout << "\t [1]  Insertar elemento      arbol AVL   \n";
+        std::cout << "\t [2]  Mostrar arbol          arbol AVL   \n";
+        std::cout << "\t [3]  Limpiar arbol          arbol AVL   \n";
+        std::cout << "\t [4]  Insertar random        arbol AVL   \n";
+        std::cout << "\t [5]  Salir                  arbol AVL   \n";
+  
+        std::cout << "\n\t Ingrese opcion : ";
+        std::cin >> opcion;
+        system("cls"); 
+
+        switch (opcion) {
+            case 1:
+                std::cout << "Ingrese el elemento a insertar: ";
+                std::cin >> elemento;
+                arbol.insertar(elemento);
+                break;
+            case 2:
+                std::cout<<"\n"<<"==============================================================================="<<"\n";
+                std::cout<<"\n"<<"                                   ARBOL AVL                                   "<<"\n";
+                std::cout<<"\n"<<"==============================================================================="<<"\n\n\n";
+                system("color 05"); 
+                arbol.mostrarArbolAVL();
+                system("pause");
+                break;
+            case 3:
+                arbol.clearAll();
+                std::cout<<"\n"<<"==============================================================================="<<"\n";
+                std::cout<<"\n"<<"                                   ARBOL LIMPIO                                "<<"\n";
+                std::cout<<"\n"<<"==============================================================================="<<"\n";
+                system("pause");
+                break;
+            case 4:
+                int cantidadNumeros;
+                std::cout << " Ingrese la cantidad de números aleatorios a insertar: ";
+                std::cin >> cantidadNumeros;
+                insertarNumerosRandom(arbol, cantidadNumeros);
+                system("pause");
+                break;
+
+            case 5:
+                break;
+            
+            default:
+                std::cout << "Opción inválida" << std::endl;
+                break;
+        }
+        
+    } while (opcion != 5);
+}
+
+/*
 int main() {
     ArbolAVL arbol;
 
-    arbol.insertar(10);
-    arbol.insertar(20);
-    arbol.insertar(30);
-    arbol.mostrarArbolAVL();
-
-    arbol.eliminar(20);
-    arbol.mostrarArbolAVL();
-
-    arbol.buscar(10);
-    arbol.buscar(20);
-
+    menuAVL(arbol);
     return 0;
 }
+*/
