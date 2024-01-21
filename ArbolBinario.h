@@ -63,12 +63,9 @@ ABB crearNodo(int x)
 
 void insertar(ABB &arbol, int x)
 {
-	system("cls");
 	if (arbol == NULL)
 	{
 		arbol = crearNodo(x);
-		cout << "\n\t  Insertado..!" << endl << endl;
-		system("cls");
 	}
 	else if (x < arbol->nro)
 		insertar(arbol->izq, x);
@@ -84,10 +81,10 @@ void verArbol(ABB arbol, int n)
 	verArbol(arbol->der, n + 1);
 
 	for (int i = 0; i<n; i++)
-		cout << "   ";
+		cout << "    ";
 
 	numNodosABB++;
-	cout << "("<< arbol->nro<<")" << endl;
+	cout << "  ("<< arbol->nro<<")" << endl;
 
 	verArbol(arbol->izq, n + 1);
 }
@@ -134,7 +131,12 @@ void insertarNumerosRandom(ABB &arbol, int n)
     for (int i = 0; i < n; ++i)
     {
         int num = rand() % 100;
+		std::cout<<"\n"<<"==============================================================================="<<"\n";
+		std::cout << "\n\t\t           ..[ INSERTANDO "<<num<<" ]..  \n";
+		std::cout<<"\n"<<"==============================================================================="<<"\n\n";
         insertar(arbol, num);
+		verArbol(arbol, 0);
+		std::cout<<"\n\n";
     }
     cout << "\n\t  Números aleatorios insertados..!" << endl << endl;
 }

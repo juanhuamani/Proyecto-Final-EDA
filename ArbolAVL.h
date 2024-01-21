@@ -18,6 +18,10 @@ private:
 public:
     ArbolAVL() : root(nullptr) {}
 
+    NodoAVL* obtenerRoot() {
+        return root;
+    }
+
     void clearAll() {
         root = nullptr;
     }
@@ -45,19 +49,23 @@ public:
         int fe = getFactorEquilibrio(nodoActual);
 
         if (fe > 1 && key < nodoActual->left->key) {
+            cout<<"Rotacion simple a la derecha\n\n"<<endl;
             return rightRotate(nodoActual);
         }
 
         if (fe < -1 && key > nodoActual->right->key) {
+            cout<<"Rotacion simple a la izquierda\n\n"<<endl;
             return leftRotate(nodoActual);
         }
 
         if (fe > 1 && key > nodoActual->left->key) {
+            cout<<"Rotacion doble a la derecha\n\n"<<endl;
             nodoActual->left = leftRotate(nodoActual->left);
             return rightRotate(nodoActual);
         }
 
         if (fe < -1 && key < nodoActual->right->key) {
+            cout<<"Rotacion doble a la izquierda\n\n"<<endl;
             nodoActual->right = rightRotate(nodoActual->right);
             return leftRotate(nodoActual);
         }
@@ -177,7 +185,6 @@ public:
 
     // Métodos auxiliares
     void mostrarArbolAVL() {
-        std::cout << "Arbol AVL" << std::endl;
         showTree(root, 0);
     }
 
@@ -237,11 +244,19 @@ private:
 };
 
 void insertarNumerosRandom(ArbolAVL &arbol, int n) {
+    srand(time(NULL));
+    int numero ;
     for (int i = 0; i < n; i++) {
-        arbol.insertar(rand() % 100);
+        numero = 1 + rand() % (100);
+        std::cout<<"\n"<<"==============================================================================="<<"\n";
+		std::cout << "\n\t\t           ..[ INSERTANDO "<<numero<<" ]..  \n";
+		std::cout<<"\n"<<"==============================================================================="<<"\n\n";
+        arbol.insertar(numero);
+        arbol.mostrarArbolAVL();
+        std::cout<<"\n\n";
     }
 
-    std::cout << "\n\t  Números aleatorios insertados..!" << std::endl << std::endl;
+    std::cout << "\n\t  Numeros aleatorios insertados..!" << std::endl << std::endl;
 
 }
 
@@ -276,7 +291,11 @@ void menuAVL(ArbolAVL &arbol) {
                 std::cout<<"\n"<<"                                   ARBOL AVL                                   "<<"\n";
                 std::cout<<"\n"<<"==============================================================================="<<"\n\n\n";
                 system("color 05"); 
-                arbol.mostrarArbolAVL();
+                if (arbol.obtenerRoot() == nullptr) {
+                    std::cout << "El arbol esta vacio" << std::endl;
+                } else {
+                    arbol.mostrarArbolAVL();
+                }
                 system("pause");
                 break;
             case 3:
@@ -288,7 +307,7 @@ void menuAVL(ArbolAVL &arbol) {
                 break;
             case 4:
                 int cantidadNumeros;
-                std::cout << " Ingrese la cantidad de números aleatorios a insertar: ";
+                std::cout << " Ingrese la cantidad de numeros aleatorios a insertar: ";
                 std::cin >> cantidadNumeros;
                 insertarNumerosRandom(arbol, cantidadNumeros);
                 system("pause");
