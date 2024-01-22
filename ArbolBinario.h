@@ -187,12 +187,15 @@ void menuABB(ABB& arbol){
 
 			case 4:
 				int cantidadNumeros;
-				cout << " Ingrese la cantidad de números aleatorios a insertar: ";
+				cout << " Ingrese la cantidad de numeros aleatorios a insertar: ";
 				cin >> cantidadNumeros;
 				insertarNumerosRandom(arbol, cantidadNumeros);
 				system("pause");
 				break;
-				
+			
+			case 5:
+				break;
+
 			default:
 				cout << " Opcion incorrecta..!" << endl;
 				break;

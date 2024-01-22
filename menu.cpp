@@ -2,12 +2,14 @@
 
 #include "ArbolBinario.h"
 #include "ArbolAVL.h"
-
+#include "ArbolRB.h"
+#include "ColorsHead.h"
 
 int main() {
     int opcion;
     ArbolAVL arbolAVL;
     ABB arbolABB = NULL;
+    RedBlackTree<int> arbolRB;
 
     do {
         system("color 0a"); 
@@ -17,7 +19,8 @@ int main() {
 		cout<<"\n"<<"==============================================================================="<<"\n";
 		cout << "\t [1]  Arbol ABB  \n";
 		cout << "\t [2]  Arbol AVL  \n";
-		cout << "\t [3]  Salir  \n";
+		cout << "\t [3]  Arbol RB  \n";
+		cout << "\t [4]  Salir  \n";
 
         cout<<"\n\n";
         std::cout << "Ingrese una opcion: ";
@@ -31,14 +34,18 @@ int main() {
                 menuAVL(arbolAVL);
                 break;
             case 3:
+                menuRedBlack(arbolRB);
                 break;
+            case 4:
+                break;
+
             default:
                 std::cout << "Opcion invalida" << std::endl;
                 break;
         }
         
         std::cout << std::endl;
-    } while (opcion != 3);
+    } while (opcion != 4);
     
     return 0;
 }
