@@ -4,3 +4,5 @@
 #define YELLOW_COLOR "\033[33m"
 #define BLUE_COLOR "\033[34m"
 #define BLACK_COLOR "\033[30m"
+#define MAGENTA_COLOR "\033[35m"
+#define ITALIC "\033[3m"

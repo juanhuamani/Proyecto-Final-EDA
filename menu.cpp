@@ -1,5 +1,4 @@
-#include <iostream>
-
+#include <bits/stdc++.h>    
 #include "ArbolBinario.h"
 #include "ArbolAVL.h"
 #include "ArbolRB.h"
@@ -12,17 +11,17 @@ int main() {
     RedBlackTree<int> arbolRB;
 
     do {
-        system("color 0a"); 
 		system("cls");
-		cout<<"\n"<<"==============================================================================="<<"\n";
-		cout << "\n\t\t                 ..[  MENU  ]..  \n";
-		cout<<"\n"<<"==============================================================================="<<"\n";
-		cout << "\t [1]  Arbol ABB  \n";
-		cout << "\t [2]  Arbol AVL  \n";
-		cout << "\t [3]  Arbol RB  \n";
-		cout << "\t [4]  Salir  \n";
 
-        cout<<"\n\n";
+		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
+		cout <<RESET_COLOR<<"\n\t\t                 ..[  "<<MAGENTA_COLOR<<ITALIC<<"MENU"<<RESET_COLOR<<"  ]..  \n";
+		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
+		cout << RED_COLOR<<"\t [1]"<<RESET_COLOR<<"  Arbol ABB  \n";
+		cout << RED_COLOR<<"\t [2]"<<RESET_COLOR<<"  Arbol AVL  \n";
+		cout << RED_COLOR<<"\t [3]"<<RESET_COLOR<<"  Arbol RB  \n";
+		cout << RED_COLOR<<"\t [4]"<<RESET_COLOR<<"  Salir  \n";
+
+        cout<<"\n\n"<<RESET_COLOR;
         std::cout << "Ingrese una opcion: ";
         std::cin >> opcion;
         
