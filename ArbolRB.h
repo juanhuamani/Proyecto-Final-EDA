@@ -1,9 +1,8 @@
 #include <iostream>
 #include <fstream>
-
 #include "ColorsHead.h"
 
-enum Color { RED, BLACK };
+enum Color { REDRB, BLACKRB };
 
 template <typename Key>
 class Node {
@@ -15,7 +14,7 @@ public:
     Node* right;
 
     // Constructor
-    Node(Key key, Color color = RED)
+    Node(Key key, Color color = REDRB)
         : key(key), color(color), parent(nullptr), left(nullptr), right(nullptr) {}
 };
 
@@ -89,13 +88,13 @@ void RedBlackTree<Key>::rightRotate(Node<Key>* y) {
 // Insert fixup
 template <typename Key>
 void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
-    while (z->parent && z->parent->color == RED) {
+    while (z->parent && z->parent->color == REDRB) {
         if (z->parent == z->parent->parent->left) {
             Node<Key>* y = z->parent->parent->right;
-            if (y && y->color == RED) {
-                z->parent->color = BLACK;
-                y->color = BLACK;
-                z->parent->parent->color = RED;
+            if (y && y->color == REDRB) {
+                z->parent->color = BLACKRB;
+                y->color = BLACKRB;
+                z->parent->parent->color = REDRB;
                 z = z->parent->parent;
                 std::cout << "Cambio de color en la raiz.\n";
             } else {
@@ -103,17 +102,17 @@ void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
                     z = z->parent;
                     leftRotate(z);
                 }
-                z->parent->color = BLACK;
-                z->parent->parent->color = RED;
+                z->parent->color = BLACKRB;
+                z->parent->parent->color = REDRB;
                 rightRotate(z->parent->parent);
                 std::cout << "Rotacion derecha.\n";
             }
         } else {
             Node<Key>* y = z->parent->parent->left;
-            if (y && y->color == RED) {
-                z->parent->color = BLACK;
-                y->color = BLACK;
-                z->parent->parent->color = RED;
+            if (y && y->color == REDRB) {
+                z->parent->color = BLACKRB;
+                y->color = BLACKRB;
+                z->parent->parent->color = REDRB;
                 z = z->parent->parent;
                 std::cout << "Cambio de color en la raiz.\n";
             } else {
@@ -121,14 +120,14 @@ void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
                     z = z->parent;
                     rightRotate(z);
                 }
-                z->parent->color = BLACK;
-                z->parent->parent->color = RED;
+                z->parent->color = BLACKRB;
+                z->parent->parent->color = REDRB;
                 leftRotate(z->parent->parent);
                 std::cout << "Rotacion izquierda.\n";
             }
         }
     }
-    root->color = BLACK;
+    root->color = BLACKRB;
 }
 
 // Insertion
@@ -171,8 +170,8 @@ void printHelper(Node<Key>* root, int space, int level = 0) {
     for (int i = 0; i < space; i++)
         std::cout << " ";
 
-    std::cout << (root->color == RED ? RED_COLOR : BLACK_COLOR) << root->key << "("
-              << (root->color == RED ? "ROJO" : "NEGRO") << ")" << RESET_COLOR << "\n";
+    std::cout << (root->color == REDRB ? "\033[31m" : "\033[30m") << root->key << "("
+              << (root->color == REDRB ? "ROJO" : "NEGRO") << ")" << "\033[0m" << "\n";
 
     printHelper(root->left, space, level + 1);
 }
