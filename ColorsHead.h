@@ -1,3 +1,7 @@
+#define WHITE "\x1B[47m"
+#define RED "\x1B[41m"
+#define RESET_BACKGROUND "\x1B[40m"
+
 #define RESET_COLOR "\033[0m"
 #define RED_COLOR "\033[31m"
 #define GREEN_COLOR "\033[32m"
