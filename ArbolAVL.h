@@ -1,5 +1,8 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
+
+using namespace std;
 
 class NodoAVL {
 public:
@@ -183,24 +186,47 @@ public:
         return nuevaRaiz;
     }
 
-    // Métodos auxiliares
+    std::vector<std::vector<char>> crearMatriz(int n, int m) {
+        std::vector<std::vector<char>> matriz(n, std::vector<char>(m, ' '));
+        return matriz;
+    }
+
+    // Esta función imprime una matriz de nxm en la consola
+    void imprimirMatriz(const std::vector<std::vector<char>>& matriz) {
+        for (int i = 0; i < matriz.size(); i++) {
+            for (int j = 0; j < matriz[i].size(); j++) {
+                std::cout << matriz[i][j];
+            }
+            std::cout << "\n\n";
+        }
+    }
+
+    void rellenarMatriz(NodoAVL* nodo, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
+        if (nodo == nullptr)
+            return;
+        std::string s = std::to_string(nodo->key);
+        for (int i = 0; i < s.size(); i++) {
+            matriz[fila][col + i] = s[i];
+        }
+        rellenarMatriz(nodo->left, matriz, fila + 1, col - offset, offset / 2);
+        rellenarMatriz(nodo->right, matriz, fila + 1, col + offset, offset / 2);
+    }
+
+    int altura(NodoAVL* nodo) {
+        if (nodo == nullptr)
+            return 0;
+        int hizq = altura(nodo->left);
+        int hder = altura(nodo->right);
+        return std::max(hizq, hder) + 1;
+    }
+
     void mostrarArbolAVL() {
-        showTree(root, 0);
+        int h = altura(root);
+        std::vector<std::vector<char>> matriz = crearMatriz(h, 100);
+        rellenarMatriz(root, matriz, 0, 50, 25);
+        imprimirMatriz(matriz);
     }
 
-    void showTree(NodoAVL* nodo, int depth) {
-        if (nodo->right != nullptr) {
-            showTree(nodo->right, depth + 1);
-        }
-        for (int i = 0; i < depth; i++) {
-            std::cout << "    ";
-        }
-        std::cout << "(" << nodo->key << ")" << std::endl;
-
-        if (nodo->left != nullptr) {
-            showTree(nodo->left, depth + 1);
-        }
-    }
 
     void limpiarArbol(NodoAVL* nodoActual) {
         if (nodoActual != nullptr) {
@@ -324,7 +350,7 @@ void menuAVL(ArbolAVL &arbol) {
     } while (opcion != 5);
 }
 
-/*
+/* 
 int main() {
     ArbolAVL arbol;
 
