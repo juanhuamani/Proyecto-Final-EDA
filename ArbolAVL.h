@@ -204,12 +204,25 @@ public:
     void rellenarMatriz(NodoAVL* nodo, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
         if (nodo == nullptr)
             return;
+        // Convertimos el valor del nodo a una cadena de caracteres
         std::string s = std::to_string(nodo->key);
+        // Colocamos la cadena en la posición correspondiente de la matriz
         for (int i = 0; i < s.size(); i++) {
             matriz[fila][col + i] = s[i];
         }
-        rellenarMatriz(nodo->left, matriz, fila + 1, col - offset, offset / 2);
-        rellenarMatriz(nodo->right, matriz, fila + 1, col + offset, offset / 2);
+        // Rellenamos la matriz con los subárboles izquierdo y derecho
+        if (nodo->left != NULL) {
+            // Colocamos el carácter "/" para unir el nodo con su hijo izquierdo
+            matriz[fila + 1][col - offset / 2] = '/';
+            // Llamamos recursivamente a la función para el subárbol izquierdo
+            rellenarMatriz(nodo->left, matriz, fila + 2, col - offset, offset / 2);
+        }
+        if (nodo->right != NULL) {
+            // Colocamos el carácter "\" para unir el nodo con su hijo derecho
+            matriz[fila + 1][col + offset / 2] = '\\';
+            // Llamamos recursivamente a la función para el subárbol derecho
+            rellenarMatriz(nodo->right, matriz, fila + 2, col + offset, offset / 2);
+        }
     }
 
     int altura(NodoAVL* nodo) {
@@ -222,7 +235,7 @@ public:
 
     void mostrarArbolAVL() {
         int h = altura(root);
-        std::vector<std::vector<char>> matriz = crearMatriz(h, 100);
+        std::vector<std::vector<char>> matriz = crearMatriz(h*2, 100);
         rellenarMatriz(root, matriz, 0, 50, 25);
         imprimirMatriz(matriz);
     }

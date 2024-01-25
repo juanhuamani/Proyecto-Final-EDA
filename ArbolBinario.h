@@ -89,10 +89,8 @@ void limpiarArbol(ABB &arbol)
 int altura(ABB arbol) {
     if (arbol == NULL)
         return 0;
-    // Calculamos la altura de los subárboles izquierdo y derecho
     int hizq = altura(arbol->izq);
     int hder = altura(arbol->der);
-    // La altura del árbol es el máximo de las alturas de los subárboles más uno
     return std::max(hizq, hder) + 1;
 }
 
@@ -103,7 +101,7 @@ std::vector<std::vector<char>> crearMatriz(int n, int m) {
 
 void imprimirMatriz(const std::vector<std::vector<char>>& matriz) {
     for (int i = 0; i < matriz.size(); i++) {
-        for (int j = 70; j < matriz[i].size(); j++) {
+        for (int j = 100; j < matriz[i].size(); j++) {
             std::cout << matriz[i][j];
         }
         std::cout << "\n\n";
@@ -117,14 +115,20 @@ void rellenarMatriz(ABB arbol, std::vector<std::vector<char>>& matriz, int fila,
     for (int i = 0; i < s.size(); i++) {
         matriz[fila][col + i] = s[i];
     }
-    rellenarMatriz(arbol->izq, matriz, fila + 1, col - offset, offset / 2);
-    rellenarMatriz(arbol->der, matriz, fila + 1, col + offset, offset / 2);
+    if (arbol->izq != NULL) {
+        matriz[fila + 1][col - offset / 2] = '/';
+        rellenarMatriz(arbol->izq, matriz, fila + 2, col - offset, offset / 2);
+    }
+    if (arbol->der != NULL) {
+        matriz[fila + 1][col + offset / 2] = '\\';
+        rellenarMatriz(arbol->der, matriz, fila + 2, col + offset, offset / 2);
+    }
 }
 
 void verArbol(ABB arbol) {
     int h = altura(arbol);
-    std::vector<std::vector<char>> matriz = crearMatriz(h, 200);
-    rellenarMatriz(arbol, matriz, 0, 100, 12);
+    std::vector<std::vector<char>> matriz = crearMatriz(h*3, 300);
+    rellenarMatriz(arbol, matriz, 0, 150, 20);
     imprimirMatriz(matriz);
 }
 

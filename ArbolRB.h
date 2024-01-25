@@ -1,6 +1,8 @@
+#ifndef ArbolRB_H
+#define ArbolRB_H
 #include <iostream>
 #include <fstream>
-#include "ColorsHead.h"
+#include <vector>
 
 enum Color { REDRB, BLACKRB };
 
@@ -13,7 +15,6 @@ public:
     Node* left;
     Node* right;
 
-    // Constructor
     Node(Key key, Color color = REDRB)
         : key(key), color(color), parent(nullptr), left(nullptr), right(nullptr) {}
 };
@@ -23,16 +24,17 @@ class RedBlackTree {
 private:
     Node<Key>* root;
 
-    // Helper functions
     void leftRotate(Node<Key>* x);
     void rightRotate(Node<Key>* y);
     void insertFixup(Node<Key>* z);
 
 public:
-    // Constructor
     RedBlackTree() : root(nullptr) {}
-
-    // Public API
+    
+    Node<Key>* getRoot(){
+        return root;
+    }
+    
     void insert(Key key);
     void print();
     void clearTree(Node<Key>* );
@@ -41,7 +43,6 @@ public:
 };
 
 
-// Left rotation
 template <typename Key>
 void RedBlackTree<Key>::leftRotate(Node<Key>* x) {
     Node<Key>* y = x->right;
@@ -63,7 +64,6 @@ void RedBlackTree<Key>::leftRotate(Node<Key>* x) {
     x->parent = y;
 }
 
-// Right rotation
 template <typename Key>
 void RedBlackTree<Key>::rightRotate(Node<Key>* y) {
     Node<Key>* x = y->left;
@@ -85,7 +85,6 @@ void RedBlackTree<Key>::rightRotate(Node<Key>* y) {
     y->parent = x;
 }
 
-// Insert fixup
 template <typename Key>
 void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
     while (z->parent && z->parent->color == REDRB) {
@@ -130,7 +129,6 @@ void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
     root->color = BLACKRB;
 }
 
-// Insertion
 template <typename Key>
 void RedBlackTree<Key>::insert(Key key) {
     Node<Key>* z = new Node<Key>(key);
@@ -157,31 +155,6 @@ void RedBlackTree<Key>::insert(Key key) {
 }
 
 
-// Print
-template <typename Key>
-void printHelper(Node<Key>* root, int space, int level = 0) {
-    if (root == nullptr)
-        return;
-
-    space += 13;
-
-    printHelper(root->right, space, level + 1);
-
-    for (int i = 0; i < space; i++)
-        std::cout << " ";
-
-    std::cout << (root->color == REDRB ? "\033[31m" : "\033[30m") << root->key << "("
-              << (root->color == REDRB ? "ROJO" : "NEGRO") << ")" << "\033[0m" << "\n";
-
-    printHelper(root->left, space, level + 1);
-}
-
-template <typename Key>
-void RedBlackTree<Key>::print() {
-    printHelper(root, 0);
-    std::cout<<"\n\n\n";
-}
-
 template <typename Key>
 void RedBlackTree<Key>::clearTree(Node<Key>* node) {
     if (node == nullptr)
@@ -199,6 +172,57 @@ void RedBlackTree<Key>::clear() {
     root = nullptr;
 }
 
+
+
+std::vector<std::vector<char>> crearMatrizRB(int n, int m) {
+    std::vector<std::vector<char>> matriz(n, std::vector<char>(m, ' '));
+    return matriz;
+}
+
+void imprimirMatrizRB(const std::vector<std::vector<char>>& matriz) {
+    for (int i = 0; i < matriz.size(); i++) {
+        for (int j = 0; j < matriz[i].size(); j++) {
+            std::cout << matriz[i][j];
+        }
+        std::cout << "\n\n\n";
+    }
+}
+
+template <typename Key>
+void rellenarMatriz(Node<Key>* root, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
+    if (root == nullptr)
+        return;
+    std::string s = std::to_string(root->key);
+    for (int i = 0; i < s.size(); i++) {
+        matriz[fila][col + i] = s[i];
+    }
+    if (root->left != NULL) {
+        matriz[fila + 1][col - offset / 2] = '/';
+        rellenarMatriz(root->left, matriz, fila + 2, col - offset, offset / 2);
+    }
+    if (root->right != NULL) {
+        matriz[fila + 1][col + offset / 2] = '\\';
+        rellenarMatriz(root->right, matriz, fila + 2, col + offset, offset / 2);
+    }
+}
+
+template <typename Key>
+int altura(Node<Key>* nodo) {
+    if (nodo == nullptr)
+        return 0;
+    int hizq = altura(nodo->left);
+    int hder = altura(nodo->right);
+    return std::max(hizq, hder) + 1;
+}
+
+template <typename Key>
+void printHelper(Node<Key>* root, int space, int level = 0) {
+    int h = altura(root); 
+    std::vector<std::vector<char>> matriz = crearMatrizRB(h*2, 100); 
+    rellenarMatriz(root, matriz, 0, 50, 25); 
+    imprimirMatrizRB(matriz); 
+}
+
 void insertarNumerosRandom(RedBlackTree <int> & rbTree, int n) {
     srand(time(NULL));
     int numero ;
@@ -208,8 +232,8 @@ void insertarNumerosRandom(RedBlackTree <int> & rbTree, int n) {
 		std::cout << "\n\t\t           ..[ INSERTANDO "<<numero<<" ]..  \n";
 		std::cout<<"\n"<<"==============================================================================="<<"\n\n";
         rbTree.insert(numero);
-        rbTree.print();
-        std::cout<<"\n\n";
+        printHelper(rbTree.getRoot(), 0);
+        std::cout<<"\n\n\n";
     }
 
     std::cout << "\n\t  Numeros aleatorios insertados..!" << std::endl << std::endl;
@@ -247,7 +271,7 @@ void menuRedBlack (RedBlackTree <int> & rbTree ){
 				std::cout<<"\n"<<"==============================================================================="<<"\n";
 				std::cout<<"\n"<<"                                   ARBOL RB                                    "<<"\n";
 				std::cout<<"\n"<<"==============================================================================="<<"\n\n\n";
-				rbTree.print();
+				printHelper(rbTree.getRoot(), 0);
 				system("pause");
 				break;
 
@@ -277,6 +301,8 @@ void menuRedBlack (RedBlackTree <int> & rbTree ){
 
 	} while (op != 5);
 }
+
+#endif 
 
 /* 
 int main() {
