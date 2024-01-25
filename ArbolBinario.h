@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <vector>
 
 using namespace std;
 
@@ -74,21 +75,6 @@ void insertar(ABB &arbol, int x)
 }
 
 
-void verArbol(ABB arbol, int n)
-{
-	if (arbol == NULL)
-		return;
-	verArbol(arbol->der, n + 1);
-
-	for (int i = 0; i<n; i++)
-		cout << "    ";
-
-	numNodosABB++;
-	cout << "  ("<< arbol->nro<<")" << endl;
-
-	verArbol(arbol->izq, n + 1);
-}
-
 void limpiarArbol(ABB &arbol)
 {
     if (arbol != NULL)
@@ -100,29 +86,46 @@ void limpiarArbol(ABB &arbol)
     }
 }
 
+int altura(ABB arbol) {
+    if (arbol == NULL)
+        return 0;
+    // Calculamos la altura de los subárboles izquierdo y derecho
+    int hizq = altura(arbol->izq);
+    int hder = altura(arbol->der);
+    // La altura del árbol es el máximo de las alturas de los subárboles más uno
+    return std::max(hizq, hder) + 1;
+}
 
+std::vector<std::vector<char>> crearMatriz(int n, int m) {
+    std::vector<std::vector<char>> matriz(n, std::vector<char>(m, ' '));
+    return matriz;
+}
 
-void recorrerxNivel(ABB arbol)
-{
-	struct cola q;
-	inicializaCola(q);
-	cout << "\t";
+void imprimirMatriz(const std::vector<std::vector<char>>& matriz) {
+    for (int i = 0; i < matriz.size(); i++) {
+        for (int j = 70; j < matriz[i].size(); j++) {
+            std::cout << matriz[i][j];
+        }
+        std::cout << "\n\n";
+    }
+}
 
-	if (arbol != NULL)
-	{
-		encola(q, arbol);
+void rellenarMatriz(ABB arbol, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
+    if (arbol == NULL)
+        return;
+    std::string s = std::to_string(arbol->nro);
+    for (int i = 0; i < s.size(); i++) {
+        matriz[fila][col + i] = s[i];
+    }
+    rellenarMatriz(arbol->izq, matriz, fila + 1, col - offset, offset / 2);
+    rellenarMatriz(arbol->der, matriz, fila + 1, col + offset, offset / 2);
+}
 
-		while (q.delante != NULL)
-		{
-			arbol = desencola(q);
-			cout << arbol->nro << ' ';
-
-			if (arbol->izq != NULL)
-				encola(q, arbol->izq);
-			if (arbol->der != NULL)
-				encola(q, arbol->der);
-		}
-	}
+void verArbol(ABB arbol) {
+    int h = altura(arbol);
+    std::vector<std::vector<char>> matriz = crearMatriz(h, 200);
+    rellenarMatriz(arbol, matriz, 0, 100, 12);
+    imprimirMatriz(matriz);
 }
 
 void insertarNumerosRandom(ABB &arbol, int n)
@@ -135,7 +138,7 @@ void insertarNumerosRandom(ABB &arbol, int n)
 		std::cout << "\n\t\t           ..[ INSERTANDO "<<num<<" ]..  \n";
 		std::cout<<"\n"<<"==============================================================================="<<"\n\n";
         insertar(arbol, num);
-		verArbol(arbol, 0);
+		verArbol(arbol);
 		std::cout<<"\n\n";
     }
     cout << "\n\t  Números aleatorios insertados..!" << endl << endl;
@@ -173,7 +176,7 @@ void menuABB(ABB& arbol){
 				std::cout<<"\n"<<"==============================================================================="<<"\n";
 				std::cout<<"\n"<<"                                   ARBOL ABB                                   "<<"\n";
 				std::cout<<"\n"<<"==============================================================================="<<"\n\n\n";
-				verArbol(arbol, 0);
+				verArbol(arbol);
 				system("pause");
 				break;
 
@@ -205,13 +208,3 @@ void menuABB(ABB& arbol){
 	} while (op != 5);
 }
 
-
-/*	
-int main()
-{
-	ABB arbol = NULL;
-	menuABB(arbol); 
-	
-
-}
-*/
