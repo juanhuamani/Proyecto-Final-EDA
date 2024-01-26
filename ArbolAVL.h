@@ -190,8 +190,8 @@ public:
 
     // Esta función imprime una matriz de nxm en la consola
     void imprimirMatriz(const std::vector<std::vector<texto>>& matriz) {
-        for (int i = 0; i < matriz.size(); i++) {
-            for (int j = 0; j < matriz[i].size(); j++) {
+        for (std::vector<char>::size_type i = 0; i < matriz.size(); i++) {
+            for (std::vector<char>::size_type j = 0; j < matriz[i].size(); j++) {
                 std::cout << matriz[i][j];
             }
             std::cout << "\n\n";

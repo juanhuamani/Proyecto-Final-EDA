@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "texto.h"
+#include "ColorsHead.h"
 
 enum Color { REDRB, BLACKRB };
 
@@ -96,7 +96,7 @@ void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
                 y->color = BLACKRB;
                 z->parent->parent->color = REDRB;
                 z = z->parent->parent;
-                cout<<RED_COLOR<<"CAMBIO DE COLOR"<<RESET_COLOR<<"al nodo "<<RED<<z->parent->parent->key<<RESET_BACKGROUND<<"\n\n"<<endl;
+                std::cout << "Cambio de color en la raiz.\n";
             } else {
                 if (z == z->parent->right) {
                     z = z->parent;
@@ -105,7 +105,7 @@ void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
                 z->parent->color = BLACKRB;
                 z->parent->parent->color = REDRB;
                 rightRotate(z->parent->parent);
-                cout<<"Rotacion a la "<<RED<<"DERECHA"<<RESET_BACKGROUND<<"\n\n"<<endl;
+                std::cout << "Rotacion derecha.\n";
             }
         } else {
             Node<Key>* y = z->parent->parent->left;
@@ -114,7 +114,7 @@ void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
                 y->color = BLACKRB;
                 z->parent->parent->color = REDRB;
                 z = z->parent->parent;
-                cout<<RED_COLOR<<"CAMBIO DE COLOR"<<RESET_COLOR<<"al nodo "<<RED<<z->parent->parent->key<<RESET_BACKGROUND<<"\n\n"<<endl;
+                std::cout << "Cambio de color en la raiz.\n";
             } else {
                 if (z == z->parent->left) {
                     z = z->parent;
@@ -123,8 +123,7 @@ void RedBlackTree<Key>::insertFixup(Node<Key>* z) {
                 z->parent->color = BLACKRB;
                 z->parent->parent->color = REDRB;
                 leftRotate(z->parent->parent);
-                cout<<"Rotacion a la "<<CYAN<<"IZQUIERDA"<<RESET_BACKGROUND<<"\n\n"<<endl;
-
+                std::cout << "Rotacion izquierda.\n";
             }
         }
     }
@@ -176,44 +175,37 @@ void RedBlackTree<Key>::clear() {
 
 
 
-std::vector<std::vector<texto>> crearMatrizRB(int n, int m) {
-    std::vector<std::vector<texto>> matriz(n, std::vector<texto>(m,texto(WHITE, BLACK_COLOR,' ')));
+std::vector<std::vector<char>> crearMatrizRB(int n, int m) {
+    std::vector<std::vector<char>> matriz(n, std::vector<char>(m, ' '));
     return matriz;
 }
 
-void imprimirMatrizRB(const std::vector<std::vector<texto>>& matriz) {
-    for (int i = 0; i < matriz.size(); i++) {
-        for (int j = 0; j < matriz[i].size(); j++) {
+void imprimirMatrizRB(const std::vector<std::vector<char>>& matriz) {
+    for (std::vector<char>::size_type i = 0; i < matriz.size(); i++) {
+        for (std::vector<char>::size_type j = 0; j < matriz[i].size(); j++) {
+
             std::cout << matriz[i][j];
         }
-        cout<<endl;
-        for (int j=0;j<2;j++){
-            texto helper(WHITE,BLACK_COLOR,' ');
-            for(int i=0; i< matriz[0].size();i++){
-                cout<<helper;
-            }
-            cout<<endl;
-        }
+        std::cout << "\n\n\n";
     }
 }
 
 template <typename Key>
-void rellenarMatriz(Node<Key>* root, std::vector<std::vector<texto>>& matriz, int fila, int col, int offset) {
+void rellenarMatriz(Node<Key>* root, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
     if (root == nullptr)
         return;
-    std::string s = std::to_string(root->key);
-    for (int i = 0; i < s.size(); i++) {
-        if(root->color == REDRB)
-            matriz[fila][col + i].changeCaracter(RED, RESET_COLOR, s[i]);
-        else
-            matriz[fila][col + i].changeCaracter(RESET_BACKGROUND,RESET_COLOR, s[i]);
+    std::string s;
+    if(root->color == REDRB) s = "R -" + std::to_string(root->key) ;
+    else s ="B -" + std::to_string(root->key) ;
+    for (std::string::size_type i = 0; i < s.size(); i++) {
+        matriz[fila][col + i] = s[i];
     }
     if (root->left != NULL) {
-        matriz[fila + 1][col - offset / 2].changeCaracter(WHITE,RED_COLOR, '/');
+        matriz[fila + 1][col - offset / 2] =  '/';
         rellenarMatriz(root->left, matriz, fila + 2, col - offset, offset / 2);
     }
     if (root->right != NULL) {
-        matriz[fila + 1][col + offset / 2].changeCaracter(WHITE,RED_COLOR,'\\') ;
+        matriz[fila + 1][col + offset / 2] =  '\\';
         rellenarMatriz(root->right, matriz, fila + 2, col + offset, offset / 2);
     }
 }
@@ -230,7 +222,7 @@ int altura(Node<Key>* nodo) {
 template <typename Key>
 void printHelper(Node<Key>* root) {
     int h = altura(root); 
-    std::vector<std::vector<texto>> matriz = crearMatrizRB(h*2, 100); 
+    std::vector<std::vector<char>> matriz = crearMatrizRB(h*2, 100); 
     rellenarMatriz(root, matriz, 0, 50, 25); 
     imprimirMatrizRB(matriz); 
 }
@@ -240,15 +232,15 @@ void insertarNumerosRandom(RedBlackTree <int> & rbTree, int n) {
     int numero ;
     for (int i = 0; i < n; i++) {
         numero = 1 + rand() % (100);
-        std::cout<<RED_COLOR<<"\n"<<"==============================================================================="<<"\n";
-		cout <<RESET_COLOR<<"\n\t\t..[  "<<YELLOW<<ITALIC<<"INSERTANDO "<<RED<<numero<<RESET_BACKGROUND<<RESET_COLOR<<"  ]..  \n";
-		std::cout<<"\n"<<RED_COLOR"==============================================================================="<<"\n\n"<<RESET_COLOR;
+        std::cout<<"\n"<<"==============================================================================="<<"\n";
+		std::cout << "\n\t\t           ..[ INSERTANDO "<<numero<<" ]..  \n";
+		std::cout<<"\n"<<"==============================================================================="<<"\n\n";
         rbTree.insert(numero);
         printHelper(rbTree.getRoot());
         std::cout<<"\n\n\n";
     }
 
-    std::cout <<RED_COLOR<< "\n\t  Numeros aleatorios insertados..!" << std::endl << std::endl;
+    std::cout << "\n\t  Numeros aleatorios insertados..!" << std::endl << std::endl;
 
 }
 
@@ -314,7 +306,7 @@ void menuRedBlack (RedBlackTree <int> & rbTree ){
 	} while (op != 5);
 }
 
-#endif 
+#endif  
 
 /* 
 int main() {

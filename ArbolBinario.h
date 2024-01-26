@@ -101,8 +101,8 @@ std::vector<std::vector<texto>> crearMatriz(int n, int m) {
 }
 
 void imprimirMatriz(const std::vector<std::vector<texto>>& matriz) {
-    for (int i = 0; i < matriz.size(); i++) {
-        for (int j = 100; j < matriz[i].size(); j++) {
+    for (std::vector<char>::size_type i = 0; i < matriz.size(); i++) {
+        for (std::vector<char>::size_type j = 100; j < matriz[i].size(); j++) {
             std::cout << matriz[i][j];
         }
         std::cout << "\n\n";
@@ -113,7 +113,7 @@ void rellenarMatriz(ABB arbol, std::vector<std::vector<texto>>& matriz, int fila
     if (arbol == NULL)
         return;
     std::string s = std::to_string(arbol->nro);
-    for (int i = 0; i < s.size(); i++) {
+    for (std::string::size_type i = 0; i < s.size(); i++) {
         matriz[fila][col + i].changeCaracter(MAGENTA_COLOR, s[i]);
     }
     if (arbol->izq != NULL) {
