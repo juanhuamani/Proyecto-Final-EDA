@@ -16,10 +16,10 @@ int main() {
 		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
 		cout <<RESET_COLOR<<"\n\t\t                 ..[  "<<MAGENTA_COLOR<<ITALIC<<"MENU"<<RESET_COLOR<<"  ]..  \n";
 		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
-		cout << RED_COLOR<<"\t [1]"<<RESET_COLOR<<"  Arbol ABB  \n";
-		cout << RED_COLOR<<"\t [2]"<<RESET_COLOR<<"  Arbol AVL  \n";
-		cout << RED_COLOR<<"\t [3]"<<RESET_COLOR<<"  Arbol RB  \n";
-		cout << RED_COLOR<<"\t [4]"<<RESET_COLOR<<"  Salir  \n";
+		cout << RED_COLOR<<"\t [1]"<<RESET_COLOR<<CYAN_COLOR<<"  Arbol ABB  \n";
+		cout << RED_COLOR<<"\t [2]"<<RESET_COLOR<<CYAN_COLOR<<"  Arbol AVL  \n";
+		cout << RED_COLOR<<"\t [3]"<<RESET_COLOR<<CYAN_COLOR<<"  Arbol RB  \n";
+		cout << RED_COLOR<<"\t [4]"<<RESET_COLOR<<CYAN_COLOR<<"  Salir  \n";
 
         cout<<"\n\n"<<RESET_COLOR;
         std::cout << "Ingrese una opcion: ";

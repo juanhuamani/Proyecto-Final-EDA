@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "ColorsHead.h"
 
 enum Color { REDRB, BLACKRB };
 
@@ -180,8 +181,9 @@ std::vector<std::vector<char>> crearMatrizRB(int n, int m) {
 }
 
 void imprimirMatrizRB(const std::vector<std::vector<char>>& matriz) {
-    for (int i = 0; i < matriz.size(); i++) {
-        for (int j = 0; j < matriz[i].size(); j++) {
+    for (std::vector<char>::size_type i = 0; i < matriz.size(); i++) {
+        for (std::vector<char>::size_type j = 0; j < matriz[i].size(); j++) {
+
             std::cout << matriz[i][j];
         }
         std::cout << "\n\n\n";
@@ -192,16 +194,18 @@ template <typename Key>
 void rellenarMatriz(Node<Key>* root, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
     if (root == nullptr)
         return;
-    std::string s = std::to_string(root->key);
-    for (int i = 0; i < s.size(); i++) {
+    std::string s;
+    if(root->color == REDRB) s = RED_COLOR + std::to_string(root->key) ;
+    else s =BLUE_COLOR + std::to_string(root->key) ;
+    for (std::string::size_type i = 0; i < s.size(); i++) {
         matriz[fila][col + i] = s[i];
     }
     if (root->left != NULL) {
-        matriz[fila + 1][col - offset / 2] = '/';
+        matriz[fila + 1][col - offset / 2] =  '/';
         rellenarMatriz(root->left, matriz, fila + 2, col - offset, offset / 2);
     }
     if (root->right != NULL) {
-        matriz[fila + 1][col + offset / 2] = '\\';
+        matriz[fila + 1][col + offset / 2] =  '\\';
         rellenarMatriz(root->right, matriz, fila + 2, col + offset, offset / 2);
     }
 }
@@ -216,7 +220,7 @@ int altura(Node<Key>* nodo) {
 }
 
 template <typename Key>
-void printHelper(Node<Key>* root, int space, int level = 0) {
+void printHelper(Node<Key>* root) {
     int h = altura(root); 
     std::vector<std::vector<char>> matriz = crearMatrizRB(h*2, 100); 
     rellenarMatriz(root, matriz, 0, 50, 25); 
@@ -232,7 +236,7 @@ void insertarNumerosRandom(RedBlackTree <int> & rbTree, int n) {
 		std::cout << "\n\t\t           ..[ INSERTANDO "<<numero<<" ]..  \n";
 		std::cout<<"\n"<<"==============================================================================="<<"\n\n";
         rbTree.insert(numero);
-        printHelper(rbTree.getRoot(), 0);
+        printHelper(rbTree.getRoot());
         std::cout<<"\n\n\n";
     }
 
@@ -271,7 +275,7 @@ void menuRedBlack (RedBlackTree <int> & rbTree ){
 				std::cout<<"\n"<<"==============================================================================="<<"\n";
 				std::cout<<"\n"<<"                                   ARBOL RB                                    "<<"\n";
 				std::cout<<"\n"<<"==============================================================================="<<"\n\n\n";
-				printHelper(rbTree.getRoot(), 0);
+				printHelper(rbTree.getRoot());
 				system("pause");
 				break;
 

@@ -29,7 +29,6 @@ public:
         root = nullptr;
     }
 
-    // Métodos de inserción
     void insertar(int key) {
         root = insertarAVL(root, key);
     }
@@ -76,7 +75,6 @@ public:
         return nodoActual;
     }
 
-    // Métodos de búsqueda
     void buscar(int elemento) {
         if (BuscaEnAVL(root, elemento)) {
             std::cout << "Existe" << std::endl;
@@ -97,7 +95,6 @@ public:
         }
     }
 
-    // Métodos de eliminación
     void eliminar(int key) {
         root = eliminarAVL(root, key);
     }
@@ -159,7 +156,6 @@ public:
         return nodoActual;
     }
 
-    // Rotaciones
     NodoAVL* rightRotate(NodoAVL* nodoActual) {
         NodoAVL* nuevaRaiz = nodoActual->left;
         NodoAVL* temp = nuevaRaiz->right;
@@ -191,10 +187,9 @@ public:
         return matriz;
     }
 
-    // Esta función imprime una matriz de nxm en la consola
     void imprimirMatriz(const std::vector<std::vector<char>>& matriz) {
-        for (int i = 0; i < matriz.size(); i++) {
-            for (int j = 0; j < matriz[i].size(); j++) {
+        for (std::vector<char>::size_type i = 0; i < matriz.size(); i++) {
+            for (std::vector<char>::size_type j = 0; j < matriz[i].size(); j++) {
                 std::cout << matriz[i][j];
             }
             std::cout << "\n\n";
@@ -204,23 +199,16 @@ public:
     void rellenarMatriz(NodoAVL* nodo, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
         if (nodo == nullptr)
             return;
-        // Convertimos el valor del nodo a una cadena de caracteres
         std::string s = std::to_string(nodo->key);
-        // Colocamos la cadena en la posición correspondiente de la matriz
-        for (int i = 0; i < s.size(); i++) {
+        for (std::string::size_type i = 0; i < s.size(); i++) {
             matriz[fila][col + i] = s[i];
         }
-        // Rellenamos la matriz con los subárboles izquierdo y derecho
         if (nodo->left != NULL) {
-            // Colocamos el carácter "/" para unir el nodo con su hijo izquierdo
             matriz[fila + 1][col - offset / 2] = '/';
-            // Llamamos recursivamente a la función para el subárbol izquierdo
             rellenarMatriz(nodo->left, matriz, fila + 2, col - offset, offset / 2);
         }
         if (nodo->right != NULL) {
-            // Colocamos el carácter "\" para unir el nodo con su hijo derecho
             matriz[fila + 1][col + offset / 2] = '\\';
-            // Llamamos recursivamente a la función para el subárbol derecho
             rellenarMatriz(nodo->right, matriz, fila + 2, col + offset, offset / 2);
         }
     }
