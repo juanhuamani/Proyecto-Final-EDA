@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
-#include "ColorsHead.h"
+#include "texto.h"
 
 using namespace std;
 
@@ -95,40 +95,40 @@ int altura(ABB arbol) {
     return std::max(hizq, hder) + 1;
 }
 
-std::vector<std::vector<char>> crearMatriz(int n, int m) {
-    std::vector<std::vector<char>> matriz(n, std::vector<char>(m, ' '));
+std::vector<std::vector<texto>> crearMatriz(int n, int m) {
+    std::vector<std::vector<texto>> matriz(n, std::vector<texto>(m, texto(' ')));
     return matriz;
 }
 
-void imprimirMatriz(const std::vector<std::vector<char>>& matriz) {
-    for (std::vector<char>::size_type i = 0; i < matriz.size(); i++) {
-        for (std::vector<char>::size_type j = 100; j < matriz[i].size(); j++) {
+void imprimirMatriz(const std::vector<std::vector<texto>>& matriz) {
+    for (int i = 0; i < matriz.size(); i++) {
+        for (int j = 100; j < matriz[i].size(); j++) {
             std::cout << matriz[i][j];
         }
         std::cout << "\n\n";
     }
 }
 
-void rellenarMatriz(ABB arbol, std::vector<std::vector<char>>& matriz, int fila, int col, int offset) {
+void rellenarMatriz(ABB arbol, std::vector<std::vector<texto>>& matriz, int fila, int col, int offset) {
     if (arbol == NULL)
         return;
     std::string s = std::to_string(arbol->nro);
-    for (std::string::size_type i = 0; i < s.size(); i++) {
-        matriz[fila][col + i] = s[i];
+    for (int i = 0; i < s.size(); i++) {
+        matriz[fila][col + i].changeCaracter(MAGENTA_COLOR, s[i]);
     }
     if (arbol->izq != NULL) {
-        matriz[fila + 1][col - offset / 2] = '/';
+        matriz[fila + 1][col - offset / 2].changeCaracter(BLUE_COLOR, '/');
         rellenarMatriz(arbol->izq, matriz, fila + 2, col - offset, offset / 2);
     }
     if (arbol->der != NULL) {
-        matriz[fila + 1][col + offset / 2] = '\\';
+        matriz[fila + 1][col + offset / 2].changeCaracter(BLUE_COLOR,'\\') ;
         rellenarMatriz(arbol->der, matriz, fila + 2, col + offset, offset / 2);
     }
 }
 
 void verArbol(ABB arbol) {
     int h = altura(arbol);
-    std::vector<std::vector<char>> matriz = crearMatriz(h*2, 300);
+    std::vector<std::vector<texto>> matriz = crearMatriz(h*2, 300);
     rellenarMatriz(arbol, matriz, 0, 150, 20);
     imprimirMatriz(matriz);
 }
@@ -139,6 +139,7 @@ void insertarNumerosRandom(ABB &arbol, int n)
     for (int i = 0; i < n; ++i)
     {
         int num = rand() % 100;
+
 		std::cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
 		cout <<RESET_COLOR<<"\n\t\t     ..[  "<<MAGENTA_COLOR<<ITALIC<<"INSERTANDO "<<num<<RESET_COLOR<<"  ]..  \n";
 		std::cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n\n";
@@ -146,7 +147,7 @@ void insertarNumerosRandom(ABB &arbol, int n)
 		verArbol(arbol);
 		std::cout<<"\n\n";
     }
-    cout << "\n\t  Números aleatorios insertados..!" << endl << endl;
+    cout << MAGENTA<<RESET_COLOR<<"\n\t  Números aleatorios insertados..!" << RESET_BACKGROUND<<endl << endl;
 }
 
 
@@ -154,6 +155,7 @@ void menuABB(ABB& arbol){
 	int op , x;
 	do{
 		system("cls");
+
 		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
 		cout <<RESET_COLOR<<"\n\t\t     ..[  "<<MAGENTA_COLOR<<ITALIC<<"ARBOL BINARIO DE BUSQUEDA"<<RESET_COLOR<<"  ]..  \n";
 		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
@@ -178,6 +180,7 @@ void menuABB(ABB& arbol){
 				break;
 
 			case 2: 
+
 				std::cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
 				std::cout <<RESET_COLOR<<"\n\t\t      ..[   "<<MAGENTA_COLOR<<ITALIC<<"ABB"<<RESET_COLOR<<"   ]..  \n";
 				std::cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n\n\n";
@@ -195,7 +198,7 @@ void menuABB(ABB& arbol){
 
 			case 4:
 				int cantidadNumeros;
-				cout << " Ingrese la cantidad de numeros aleatorios a insertar: ";
+				std::cout << MAGENTA_COLOR<<ITALIC<<"-> Ingrese"<<RESET_COLOR<< " la "<<MAGENTA<<BLUE_COLOR<<"cantidad de numeros aleatorios "<<RESET_BACKGROUND<<RESET_COLOR<<"a insertar: "<<MAGENTA_COLOR;
 				cin >> cantidadNumeros;
 				insertarNumerosRandom(arbol, cantidadNumeros);
 				system("pause");
@@ -205,7 +208,7 @@ void menuABB(ABB& arbol){
 				break;
 
 			default:
-				cout << " Opcion incorrecta..!" << endl;
+				std::cout <<CYAN<<MAGENTA_COLOR<< "OPCION DE INVALIDA" <<RESET_BACKGROUND<<RESET_COLOR<< std::endl;
 				break;
 
 		} 

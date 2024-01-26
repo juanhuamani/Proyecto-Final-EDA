@@ -1,5 +1,10 @@
 #define WHITE "\x1B[47m"
 #define RED "\x1B[41m"
+#define YELLOW "\x1B[43m"
+#define ORANGE "\x1B[48;2;255;128;0m"
+#define GREEN "\x1B[48;2;17;245;120m"
+#define CYAN "\x1B[46m"
+#define MAGENTA "\x1B[45m"
 #define RESET_BACKGROUND "\x1B[40m"
 
 #define RESET_COLOR "\033[0m"
