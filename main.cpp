@@ -1,21 +1,50 @@
-#include <iostream>
-using namespace std;
-int main()
-{   
-	system("cls");
-    cout << "\x1B[H";
-    cout << "\x1B[3;34m";
-    cout << "/***************************************************/" <<  endl; 
-	cout << "\x1B[m";
-    cout << "\x1B[31;5;88mUniversidad Nacional de San Agustin \x1B[m" <<  endl; 
-	cout << "\x1B[33;5;88mEscuela Profesional de Ciencia de la Computacion I\x1B[m" <<  endl; 
-	cout << "Curso de Estructura de Datos Avanzados" <<  endl; 
-	cout << "\x1B[38;5;46mProf. D.Sc. Manuel Eduardo Loaiza Fernandez \x1B[m" << endl; 
-	cout << "Arequipa 2023 - I" << endl; 
-	cout << "\x1B[3;34m";
-    cout << "/***************************************************/" << endl;
-	cout << "\x1B[m";
-    cout << "\nHello, World!! 2023 - Winter\n\n"; 
+#include <bits/stdc++.h>    
+#include "ArbolBinario.h"
+#include "ArbolAVL.h"
+#include "ArbolRB.h"
+#include "ColorsHead.h"
 
-	return 0;
+int main() {
+    int opcion;
+    ArbolAVL arbolAVL;
+    ABB arbolABB = NULL;
+    RedBlackTree<int> arbolRB;
+
+    do {
+		system("cls");
+
+		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
+		cout <<RESET_COLOR<<"\n\t\t                 ..[  "<<MAGENTA_COLOR<<ITALIC<<"MENU"<<RESET_COLOR<<"  ]..  \n";
+		cout<<BLUE_COLOR<<"\n"<<"==============================================================================="<<"\n";
+		cout << RED_COLOR<<"\t [1]"<<RESET_COLOR<<CYAN_COLOR<<"  Arbol ABB  \n";
+		cout << RED_COLOR<<"\t [2]"<<RESET_COLOR<<CYAN_COLOR<<"  Arbol AVL  \n";
+		cout << RED_COLOR<<"\t [3]"<<RESET_COLOR<<CYAN_COLOR<<"  Arbol RB  \n";
+		cout << RED_COLOR<<"\t [4]"<<RESET_COLOR<<CYAN_COLOR<<"  Salir  \n";
+
+        cout<<"\n\n"<<RESET_COLOR;
+        std::cout << "Ingrese una opcion: ";
+        std::cin >> opcion;
+        
+        switch (opcion) {
+            case 1:
+                menuABB(arbolABB);
+                break;
+            case 2:
+                menuAVL(arbolAVL);
+                break;
+            case 3:
+                menuRedBlack(arbolRB);
+                break;
+            case 4:
+                break;
+
+            default:
+                std::cout << "Opcion invalida" << std::endl;
+                break;
+        }
+        
+        std::cout << std::endl;
+    } while (opcion != 4);
+    
+    return 0;
 }

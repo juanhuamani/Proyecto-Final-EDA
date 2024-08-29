@@ -1,5 +1,9 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include "texto.h"
+
+using namespace std;
 
 class NodoAVL {
 public:
@@ -26,7 +30,6 @@ public:
         root = nullptr;
     }
 
-    // Métodos de inserción
     void insertar(int key) {
         root = insertarAVL(root, key);
     }
@@ -49,23 +52,23 @@ public:
         int fe = getFactorEquilibrio(nodoActual);
 
         if (fe > 1 && key < nodoActual->left->key) {
-            cout<<"Rotacion simple a la derecha\n\n"<<endl;
+            cout<<"Rotacion "<<GREEN_COLOR<<"SIMPLE"<<RESET_COLOR<<" a la "<<RED<<"DERECHA"<<RESET_BACKGROUND<<"\n\n"<<endl;
             return rightRotate(nodoActual);
         }
 
         if (fe < -1 && key > nodoActual->right->key) {
-            cout<<"Rotacion simple a la izquierda\n\n"<<endl;
+            cout<<"Rotacion "<<GREEN_COLOR<<"SIMPLE"<<RESET_COLOR<<" a la "<<CYAN<<"IZQUIERDA"<<RESET_BACKGROUND<<"\n\n"<<endl;
             return leftRotate(nodoActual);
         }
 
         if (fe > 1 && key > nodoActual->left->key) {
-            cout<<"Rotacion doble a la derecha\n\n"<<endl;
+            cout<<"Rotacion "<<MAGENTA_COLOR<<"DOBLE"<<RESET_COLOR<<" a la "<<RED<<"DERECHA"<<RESET_BACKGROUND<<"\n\n"<<endl;
             nodoActual->left = leftRotate(nodoActual->left);
             return rightRotate(nodoActual);
         }
 
         if (fe < -1 && key < nodoActual->right->key) {
-            cout<<"Rotacion doble a la izquierda\n\n"<<endl;
+            cout<<"Rotacion "<<MAGENTA_COLOR<<"DOBLE"<<RESET_COLOR<<" a la "<<CYAN<<"IZQUIERDA"<<RESET_BACKGROUND<<"\n\n"<<endl;
             nodoActual->right = rightRotate(nodoActual->right);
             return leftRotate(nodoActual);
         }
@@ -73,7 +76,6 @@ public:
         return nodoActual;
     }
 
-    // Métodos de búsqueda
     void buscar(int elemento) {
         if (BuscaEnAVL(root, elemento)) {
             std::cout << "Existe" << std::endl;
@@ -94,7 +96,6 @@ public:
         }
     }
 
-    // Métodos de eliminación
     void eliminar(int key) {
         root = eliminarAVL(root, key);
     }
@@ -156,7 +157,6 @@ public:
         return nodoActual;
     }
 
-    // Rotaciones
     NodoAVL* rightRotate(NodoAVL* nodoActual) {
         NodoAVL* nuevaRaiz = nodoActual->left;
         NodoAVL* temp = nuevaRaiz->right;
@@ -183,24 +183,57 @@ public:
         return nuevaRaiz;
     }
 
-    // Métodos auxiliares
+    std::vector<std::vector<texto>> crearMatriz(int n, int m) {
+        std::vector<std::vector<texto>> matriz(n, std::vector<texto>(m, texto(BLUE_COLOR,' ')));
+        return matriz;
+    }
+
+    // Esta función imprime una matriz de nxm en la consola
+    void imprimirMatriz(const std::vector<std::vector<texto>>& matriz) {
+        for (std::vector<char>::size_type i = 0; i < matriz.size(); i++) {
+            for (std::vector<char>::size_type j = 0; j < matriz[i].size(); j++) {
+                std::cout << matriz[i][j];
+            }
+            std::cout << "\n\n";
+        }
+    }
+
+    void rellenarMatriz(NodoAVL* nodo, std::vector<std::vector<texto>>& matriz, int fila, int col, int offset) {
+        if (nodo == nullptr)
+            return;
+        std::string s = std::to_string(nodo->key);
+        for (std::string::size_type i = 0; i < s.size(); i++) {
+            matriz[fila][col + i] = s[i];
+        }
+        if (nodo->left != NULL) {
+            // Colocamos el carácter "/" para unir el nodo con su hijo izquierdo
+            matriz[fila + 1][col - offset / 2].changeCaracter(BLACK_COLOR,'/') ;
+            // Llamamos recursivamente a la función para el subárbol izquierdo
+            rellenarMatriz(nodo->left, matriz, fila + 2, col - offset, offset / 2);
+        }
+        if (nodo->right != NULL) {
+            // Colocamos el carácter "\" para unir el nodo con su hijo derecho
+            matriz[fila + 1][col + offset / 2].changeCaracter(BLACK_COLOR, '\\');
+            // Llamamos recursivamente a la función para el subárbol derecho
+            rellenarMatriz(nodo->right, matriz, fila + 2, col + offset, offset / 2);
+        }
+    }
+
+    int altura(NodoAVL* nodo) {
+        if (nodo == nullptr)
+            return 0;
+        int hizq = altura(nodo->left);
+        int hder = altura(nodo->right);
+        return std::max(hizq, hder) + 1;
+    }
+
     void mostrarArbolAVL() {
-        showTree(root, 0);
+        int h = altura(root);
+        std::vector<std::vector<texto>> matriz = crearMatriz(h*2, 100);
+        rellenarMatriz(root, matriz, 0, 50, 25);
+        imprimirMatriz(matriz);
     }
 
-    void showTree(NodoAVL* nodo, int depth) {
-        if (nodo->right != nullptr) {
-            showTree(nodo->right, depth + 1);
-        }
-        for (int i = 0; i < depth; i++) {
-            std::cout << "    ";
-        }
-        std::cout << "(" << nodo->key << ")" << std::endl;
-
-        if (nodo->left != nullptr) {
-            showTree(nodo->left, depth + 1);
-        }
-    }
 
     void limpiarArbol(NodoAVL* nodoActual) {
         if (nodoActual != nullptr) {
@@ -248,15 +281,15 @@ void insertarNumerosRandom(ArbolAVL &arbol, int n) {
     int numero ;
     for (int i = 0; i < n; i++) {
         numero = 1 + rand() % (100);
-        std::cout<<"\n"<<"==============================================================================="<<"\n";
-		std::cout << "\n\t\t           ..[ INSERTANDO "<<numero<<" ]..  \n";
-		std::cout<<"\n"<<"==============================================================================="<<"\n\n";
+    	std::cout<<GREEN_COLOR<<"\n"<<"==============================================================================="<<"\n";
+		cout <<RESET_COLOR<<"\n\t\t..[  "<<YELLOW_COLOR<<ITALIC<<"INSERTANDO "<<GREEN<<numero<<RESET_BACKGROUND<<RESET_COLOR<<"  ]..  \n";
+		std::cout<<"\n"<<GREEN_COLOR"==============================================================================="<<"\n\n"<<RESET_COLOR;
         arbol.insertar(numero);
         arbol.mostrarArbolAVL();
         std::cout<<"\n\n";
     }
 
-    std::cout << "\n\t  Numeros aleatorios insertados..!" << std::endl << std::endl;
+    std::cout << GREEN_COLOR<<"\n\t  Numeros aleatorios insertados..!" << RESET_COLOR<< endl << std::endl;
 
 }
 
@@ -265,16 +298,15 @@ void menuAVL(ArbolAVL &arbol) {
     int elemento = 0;
 
     do {
-        system("color 0a"); 
 		system("cls");
-		std::cout<<"\n"<<"==============================================================================="<<"\n";
-		std::cout << "\n\t\t           ..[ ARBOL ADELSON VELSKII Y LANDIS ]..  \n";
-		std::cout<<"\n"<<"==============================================================================="<<"\n";
-        std::cout << "\t [1]  Insertar elemento      arbol AVL   \n";
-        std::cout << "\t [2]  Mostrar arbol          arbol AVL   \n";
-        std::cout << "\t [3]  Limpiar arbol          arbol AVL   \n";
-        std::cout << "\t [4]  Insertar random        arbol AVL   \n";
-        std::cout << "\t [5]  Salir                  arbol AVL   \n";
+		std::cout<<GREEN_COLOR<<"\n"<<"==============================================================================="<<"\n";
+		cout <<RESET_COLOR<<"\n\t\t..[  "<<YELLOW_COLOR<<ITALIC<<"ARBOL ADELSON VELSKII Y LANDIS"<<RESET_COLOR<<"  ]..  \n";
+        cout<<GREEN_COLOR<<"\n"<<"==============================================================================="<<"\n"<<RESET_COLOR;
+        cout << GREEN_COLOR<<ITALIC<<"\t [1]"<<RESET_COLOR<<"  Insertar elemento      arbol AVL   \n";
+		cout << GREEN_COLOR<<ITALIC<<"\t [2]"<<RESET_COLOR<<"  Mostrar arbol          arbol AVL   \n";
+		cout << GREEN_COLOR<<ITALIC<<"\t [3]"<<RESET_COLOR<<"  Limpiar arbol          arbol AVL   \n";
+		cout << GREEN_COLOR<<ITALIC<<"\t [4]"<<RESET_COLOR<<"  Insertar random        arbol AVL   \n";    
+		cout << GREEN_COLOR<<ITALIC<<"\t [5]"<<RESET_COLOR<<"  Salir                  arbol AVL   \n";    
   
         std::cout << "\n\t Ingrese opcion : ";
         std::cin >> opcion;
@@ -282,17 +314,17 @@ void menuAVL(ArbolAVL &arbol) {
 
         switch (opcion) {
             case 1:
-                std::cout << "Ingrese el elemento a insertar: ";
+                std::cout << GREEN_COLOR<<ITALIC<<" -> Ingrese"<<RESET_COLOR<< " el elemento a insertar: ";
                 std::cin >> elemento;
                 arbol.insertar(elemento);
                 break;
             case 2:
-                std::cout<<"\n"<<"==============================================================================="<<"\n";
-                std::cout<<"\n"<<"                                   ARBOL AVL                                   "<<"\n";
-                std::cout<<"\n"<<"==============================================================================="<<"\n\n\n";
+                std::cout<<"\n"<<GREEN_COLOR<<"==============================================================================="<<"\n";
+                std::cout<<"\n"<<YELLOW_COLOR<<ITALIC<<"                                   ARBOL AVL                                   "<<"\n";
+                std::cout<<"\n"<<GREEN_COLOR<<"==============================================================================="<<"\n\n\n";
                 system("color 05"); 
                 if (arbol.obtenerRoot() == nullptr) {
-                    std::cout << "El arbol esta vacio" << std::endl;
+                    std::cout <<ORANGE<<RESET_COLOR<< "EL ARBOL ESTA VACIO" <<RESET_BACKGROUND<<RESET_COLOR<< std::endl;
                 } else {
                     arbol.mostrarArbolAVL();
                 }
@@ -300,15 +332,16 @@ void menuAVL(ArbolAVL &arbol) {
                 break;
             case 3:
                 arbol.clearAll();
-                std::cout<<"\n"<<"==============================================================================="<<"\n";
-                std::cout<<"\n"<<"                                   ARBOL LIMPIO                                "<<"\n";
-                std::cout<<"\n"<<"==============================================================================="<<"\n";
+                std::cout<<"\n"<<GREEN_COLOR<<"==============================================================================="<<"\n";
+                std::cout<<"\n"<<YELLOW_COLOR<<ITALIC<<"                                   ARBOL LIMPIO                                "<<"\n";
+                std::cout<<"\n"<<GREEN_COLOR<<"==============================================================================="<<"\n";
                 system("pause");
                 break;
             case 4:
                 int cantidadNumeros;
-                std::cout << " Ingrese la cantidad de numeros aleatorios a insertar: ";
+                std::cout << GREEN_COLOR<<ITALIC<<"-> Ingrese"<<RESET_COLOR<< " la "<<GREEN<<YELLOW_COLOR<<"cantidad de numeros aleatorios "<<RESET_BACKGROUND<<RESET_COLOR<<"a insertar: "<<GREEN_COLOR;
                 std::cin >> cantidadNumeros;
+                cout<<RESET_COLOR;
                 insertarNumerosRandom(arbol, cantidadNumeros);
                 system("pause");
                 break;
@@ -317,14 +350,14 @@ void menuAVL(ArbolAVL &arbol) {
                 break;
             
             default:
-                std::cout << "Opción inválida" << std::endl;
+                std::cout <<ORANGE<<RESET_COLOR<< "OPCION DE INVALIDA" <<RESET_BACKGROUND<<RESET_COLOR<< std::endl;
                 break;
         }
         
     } while (opcion != 5);
 }
 
-/*
+/* 
 int main() {
     ArbolAVL arbol;
 
